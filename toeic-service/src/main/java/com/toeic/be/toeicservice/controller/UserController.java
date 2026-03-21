@@ -1,6 +1,7 @@
 package com.toeic.be.toeicservice.controller;
 
 import com.toeic.be.toeicservice.dto.request.UserCreationRequest;
+import com.toeic.be.toeicservice.dto.request.UserUpdateRequest;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.UserService;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -31,4 +32,8 @@ public class UserController {
         return userService.getUser(userId);
     }
 
+    @PutMapping("/{userId}")
+    User updateUser(@RequestBody UserUpdateRequest request, @PathVariable String userId){
+        return userService.updateUser(userId, request);
+    }
 }
