@@ -25,6 +25,7 @@ public class SecurityConfig     {
                         // Cho phép POST tới /auth/login
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         // Các request khác phải login
+                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

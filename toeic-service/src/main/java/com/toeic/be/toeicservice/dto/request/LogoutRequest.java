@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class AuthenticationRequest {
-    private String username;
-    private String password;
+public class LogoutRequest {
+    private String token;
 }
-
