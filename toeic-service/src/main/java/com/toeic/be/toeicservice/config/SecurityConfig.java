@@ -26,6 +26,7 @@ public class SecurityConfig     {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         // Các request khác phải login
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/{userId}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
