@@ -2,6 +2,7 @@ package com.toeic.be.toeicservice.service;
 
 import com.toeic.be.toeicservice.constant.Role;
 import com.toeic.be.toeicservice.dto.request.UserCreationRequest;
+import com.toeic.be.toeicservice.dto.request.UserUpdateRequest;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
@@ -52,4 +53,15 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
+    public User updateUser(String userId, UserUpdateRequest request) {
+        User user = getUser(userId);
+
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEmail(request.getEmail());
+        user.setFullName(request.getFullName());
+        user.setRoles(new java.util.HashSet<>(Set.of(request.getRoles())));
+
+        return userRepository.save(user);
+    }
 }
