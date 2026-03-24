@@ -46,6 +46,7 @@ public class UserService {
     }
 
     public List<User> getUsers(){
+
         return userRepository.findAll();
     }
 
@@ -63,5 +64,12 @@ public class UserService {
         user.setRoles(new java.util.HashSet<>(Set.of(request.getRoles())));
 
         return userRepository.save(user);
+    }
+
+    public void deleteUser(String userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        userRepository.delete(user);
     }
 }
