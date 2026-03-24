@@ -11,5 +11,6 @@ public class AppException extends RuntimeException {
     public AppException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
+        // define lại code để biết lỗi đẩy ra là mã mấy 400 500 ++
     }
 }
