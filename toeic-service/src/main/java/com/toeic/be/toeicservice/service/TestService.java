@@ -65,6 +65,10 @@ public class TestService {
         test.setParts(parts);
         return testRepository.save(test);
     }
+
+    public List<Test> getTests() {
+        return testRepository.findAll();
+    }
 }
 
 

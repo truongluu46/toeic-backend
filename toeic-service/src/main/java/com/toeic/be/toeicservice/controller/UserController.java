@@ -5,9 +5,7 @@ import com.toeic.be.toeicservice.dto.request.UserUpdateRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.UserService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping
-    List<User> GetUsers(){
+    List<User> getUsers(){
         return userService.getUsers();
     }
 
