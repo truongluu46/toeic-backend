@@ -1,5 +1,6 @@
 package com.toeic.be.toeicservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class QuestionGroup {
 
     @ManyToOne
     @JoinColumn(name = "part_id")
+    @JsonIgnore
     private Part part;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
