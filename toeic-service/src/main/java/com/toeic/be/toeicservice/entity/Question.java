@@ -1,6 +1,7 @@
 package com.toeic.be.toeicservice.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +25,11 @@ public class Question {
     private String optionC;
     private String optionD;
 
+    @JsonIgnore
     private String correctAnswer;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonIgnore
     private QuestionGroup group;
 }
