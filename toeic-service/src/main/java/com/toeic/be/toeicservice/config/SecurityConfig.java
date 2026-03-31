@@ -31,6 +31,8 @@ public class SecurityConfig     {
                         .requestMatchers(HttpMethod.DELETE, "/users/{userId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tests").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tests").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/tests/{testId}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/tests/{testId}").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

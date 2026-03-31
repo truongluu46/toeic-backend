@@ -2,6 +2,7 @@ package com.toeic.be.toeicservice.controller;
 
 
 import com.toeic.be.toeicservice.dto.request.TestCreationRequest;
+import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Test;
 import com.toeic.be.toeicservice.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,21 @@ public class TestController {
         return testService.getTests();
     }
 
+    @GetMapping("/{testId}")
+    ApiResponse<Test> getTestDetail(@PathVariable("testId") Long testId){
+        ApiResponse<Test> apiResponse = new ApiResponse<>();
+        apiResponse.setResults(testService.getTestDetail(testId));
+        return apiResponse;
+    }
+
     @PostMapping
     public Test createTest(@RequestBody TestCreationRequest request) {
         return testService.createTest(request);
+    }
+
+    @DeleteMapping("/{testId}")
+    String deleteTest(@PathVariable Long testId){
+         testService.deleteTest(testId);
+         return "Test has been deleted";
     }
 }

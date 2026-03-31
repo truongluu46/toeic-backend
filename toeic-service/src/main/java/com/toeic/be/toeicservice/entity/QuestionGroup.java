@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,6 +33,6 @@ public class QuestionGroup {
     private Part part;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-    private List<Question> questions;
+    private Set<Question> questions;
 
 }
