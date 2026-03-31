@@ -7,6 +7,7 @@ import lombok.*;
 
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class Test {
     private int duration;
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
-    private List<Part> parts;
+    private Set<Part> parts;
 
 
 }

@@ -8,40 +8,48 @@ import com.toeic.be.toeicservice.entity.Part;
 import com.toeic.be.toeicservice.entity.Question;
 import com.toeic.be.toeicservice.entity.QuestionGroup;
 import com.toeic.be.toeicservice.entity.Test;
+import com.toeic.be.toeicservice.exception.AppException;
+import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TestService {
     @Autowired
     private TestRepository testRepository;
 
+    @Transactional
     public Test createTest(TestCreationRequest request) {
         Test test = new Test();
         test.setTitle(request.title);
         test.setDuration(request.duration);
         test.setDescription(request.description);
 
-        List<Part> parts = new ArrayList<>();
+        Set<Part> parts = new HashSet<>();
 
         for (PartRequest pr : request.parts) {
             Part part = new Part();
             part.setPartNumber(pr.partNumber);
             part.setTest(test);
 
-            List<QuestionGroup> groups = new ArrayList<>();
+            Set<QuestionGroup> groups = new HashSet<>();
 
             for (GroupRequest gr : pr.groups) {
                 QuestionGroup group = new QuestionGroup();
                 group.setAudioUrl(gr.audioUrl);
                 group.setImageUrl(gr.imageUrl);
                 group.setPassage(gr.passage);
+                group.setPart(part);
 
-                List<Question> questions = new ArrayList<>();
+                Set<Question> questions = new HashSet<>();
 
                 for (QuestionRequest qr : gr.questions) {
                     Question q = new Question();
@@ -68,6 +76,24 @@ public class TestService {
 
     public List<Test> getTests() {
         return testRepository.findAll();
+    }
+
+    @Transactional
+    public Test getTestDetail(Long id) {
+//        Test test = testRepository.findByIdWithDetails(id).get();
+//        System.out.println("Số lượng Part: " + test.getParts().size());
+//        if (!test.getParts().isEmpty()) {
+//            System.out.println("Số lượng Group của Part 1: " +
+//                    test.getParts().iterator().next().getGroups().size());
+//        }
+//        return test;
+        return testRepository.findByIdWithDetails(id).orElseThrow(() -> new AppException(ErrorCode.TEST_NOT_FOUND));
+    }
+
+    public void deleteTest(Long id) {
+        Test test = testRepository.findByIdWithDetails(id)
+                .orElseThrow(() -> new AppException(ErrorCode.TEST_NOT_FOUND));
+        testRepository.delete(test);
     }
 }
 
