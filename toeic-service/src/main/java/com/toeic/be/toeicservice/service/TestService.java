@@ -95,6 +95,55 @@ public class TestService {
                 .orElseThrow(() -> new AppException(ErrorCode.TEST_NOT_FOUND));
         testRepository.delete(test);
     }
+
+    @Transactional
+    public Test updateTest(Long id, TestCreationRequest request){
+        Test test = getTestDetail(id);
+        test.setTitle(request.title);
+        test.setDuration(request.duration);
+        test.setDescription(request.description);
+
+        Set<Part> parts = new HashSet<>();
+
+        for (PartRequest pr : request.parts) {
+            Part part = new Part();
+            part.setPartNumber(pr.partNumber);
+            part.setTest(test);
+
+            Set<QuestionGroup> groups = new HashSet<>();
+
+            for (GroupRequest gr : pr.groups) {
+                QuestionGroup group = new QuestionGroup();
+                group.setAudioUrl(gr.audioUrl);
+                group.setImageUrl(gr.imageUrl);
+                group.setPassage(gr.passage);
+                group.setPart(part);
+
+                Set<Question> questions = new HashSet<>();
+
+                for (QuestionRequest qr : gr.questions) {
+                    Question q = new Question();
+                    q.setContent(qr.content);
+                    q.setOptionA(qr.optionA);
+                    q.setOptionB(qr.optionB);
+                    q.setOptionC(qr.optionC);
+                    q.setOptionD(qr.optionD);
+                    q.setCorrectAnswer(qr.correctAnswer);
+                    q.setGroup(group);
+
+                    questions.add(q);
+                }
+
+                group.setQuestions(questions);
+                groups.add(group);
+            }
+            part.setGroups(groups);
+            parts.add(part);
+        }
+        test.setParts(parts);
+        return testRepository.save(test);
+
+    }
 }
 
 

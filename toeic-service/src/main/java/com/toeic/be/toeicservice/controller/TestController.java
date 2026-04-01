@@ -34,6 +34,14 @@ public class TestController {
         return testService.createTest(request);
     }
 
+    @PatchMapping("/{testId}")
+    ApiResponse<Test> updateTest(@RequestBody TestCreationRequest request, @PathVariable("testId") Long testId ){
+        ApiResponse<Test> apiResponse = new ApiResponse<>();
+        apiResponse.setResults(testService.updateTest(testId, request));
+        return apiResponse;
+    }
+
+
     @DeleteMapping("/{testId}")
     String deleteTest(@PathVariable Long testId){
          testService.deleteTest(testId);
