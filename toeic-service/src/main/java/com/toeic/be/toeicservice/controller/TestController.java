@@ -14,8 +14,10 @@ import java.util.List;
 @RequestMapping("/api/tests")
 public class TestController {
 
-    @Autowired
-    private TestService testService;
+    private final TestService testService;
+    public TestController(TestService testService){
+        this.testService = testService;
+    }
 
     @GetMapping()
     List<Test> getTests(){
