@@ -11,8 +11,9 @@ public enum ErrorCode {
     USER_NOT_FOUND(1002, "User not found", HttpStatus.NOT_FOUND),
     INVALID_KEY(1003, "Invalid message key", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1004, "Email already existed", HttpStatus.BAD_REQUEST),
-    TEST_NOT_FOUND(105, "Test not found", HttpStatus.NOT_FOUND);
-
+    TEST_NOT_FOUND(1005, "Test not found", HttpStatus.NOT_FOUND),
+    CLASSCODE_EXISTED(1006,"Classroom code already existed", HttpStatus.BAD_REQUEST),
+    CLASSNAME_EXISTED(1007,"Classroom name already existed", HttpStatus.BAD_REQUEST);
     private final int code;
     private final String message;
     private final HttpStatusCode statusCode;
