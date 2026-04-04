@@ -3,9 +3,12 @@ package com.toeic.be.toeicservice.controller;
 import com.toeic.be.toeicservice.dto.request.UserCreationRequest;
 import com.toeic.be.toeicservice.dto.request.UserUpdateRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
+import com.toeic.be.toeicservice.dto.response.UserResponse;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public class UserController {
 
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     ApiResponse<User> createUser(@RequestBody UserCreationRequest request) {
         ApiResponse<User> apiResponse = new ApiResponse<>();
 
@@ -43,15 +47,15 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    ApiResponse<User> updateUser(@RequestBody UserUpdateRequest request, @PathVariable String userId){
+    ApiResponse<User> updateUser(@RequestBody UserUpdateRequest request, @PathVariable("userId") String userId){
         ApiResponse<User> apiResponse = new ApiResponse<>();
         apiResponse.setResults(userService.updateUser(userId, request));
         return apiResponse;
     }
 
     @DeleteMapping("/{userId}")
-    String deleteUser(@PathVariable String userId){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteUser(@PathVariable String userId){
         userService.deleteUser(userId);
-        return "User has been deleted";
     }
 }

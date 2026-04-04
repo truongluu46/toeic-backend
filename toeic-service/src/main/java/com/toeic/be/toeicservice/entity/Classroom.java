@@ -15,9 +15,9 @@ public class Classroom {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String ClassCode;
+    private String classCode;
 
-    private String ClassName;
+    private String className;
     private String description;
 
     @ManyToOne
@@ -33,5 +33,5 @@ public class Classroom {
     private Set<User> students;
 
    @Builder.Default
-    private LocalDateTime creatdAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
