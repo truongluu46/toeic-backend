@@ -18,10 +18,10 @@ public class ClassroomController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Classroom> createClassroom(@RequestBody ClassCreationRequest request, @PathVariable("userId") String userId) {
+    public ApiResponse<Classroom> createClassroom(@RequestBody ClassCreationRequest request) {
         ApiResponse<Classroom> apiResponse = new ApiResponse<>();
 
-        apiResponse.setResults(classroomService.createClassroom(request, userId));
+        apiResponse.setResults(classroomService.createClassroom(request, request.getOwnerId()));
         return apiResponse;
     }
 
