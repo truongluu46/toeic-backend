@@ -29,12 +29,11 @@ public class ClassroomService {
         }
 
         User owner = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        String ownerId = owner.getId();
         Classroom classroom = new Classroom();
         classroom.setClassName(request.getClassName());
         classroom.setClassCode(request.getClassCode());
         classroom.setDescription(request.getDescription());
-      //  classroom.setOwner(request.setOwner(owner));
+        classroom.setOwner(owner);
 
         return classroomRepository.save(classroom);
     }

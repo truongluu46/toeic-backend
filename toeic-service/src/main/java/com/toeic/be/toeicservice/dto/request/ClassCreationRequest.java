@@ -25,7 +25,7 @@ public class ClassCreationRequest {
 
     private String description;
 
-    private User owner;
+    private String ownerId;
 
     private Set<String> studentIds;
 
