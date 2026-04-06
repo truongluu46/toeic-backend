@@ -10,6 +10,8 @@ import com.toeic.be.toeicservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClassroomService {
     private final ClassroomRepository classroomRepository;
@@ -36,6 +38,14 @@ public class ClassroomService {
         classroom.setOwner(owner);
 
         return classroomRepository.save(classroom);
+    }
+
+    public Classroom getClassDetail(Long classId){
+        return classroomRepository.findById(classId).orElseThrow(() -> new AppException(ErrorCode.CLASS_NOT_FOUND));
+    }
+
+    public List<Classroom> getAllClassroom(){
+        return classroomRepository.findAll();
     }
 
 }
