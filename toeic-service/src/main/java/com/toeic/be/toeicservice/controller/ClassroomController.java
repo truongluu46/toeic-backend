@@ -1,6 +1,7 @@
 package com.toeic.be.toeicservice.controller;
 
 import com.toeic.be.toeicservice.dto.request.ClassCreationRequest;
+import com.toeic.be.toeicservice.dto.request.ClassroomUpdateRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Classroom;
 import com.toeic.be.toeicservice.entity.User;
@@ -41,8 +42,10 @@ public class ClassroomController {
         return apiResponse;
     }
 
-//    @PatchMapping("/{classId}")
-//    ApiResponse<Classroom> updateClassroom(ClassCreationRequest request){
-//        ApiResponse<Class>
-//    }
+    @PatchMapping("/{classId}")
+    ApiResponse<Classroom> updateClassroom(@PathVariable Long classId, ClassroomUpdateRequest request){
+        ApiResponse<Classroom> apiResponse  = new ApiResponse<>();
+        apiResponse.setResults(classroomService.updateClassroom(classId, request));
+        return apiResponse;
+    }
 }
