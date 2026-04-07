@@ -15,15 +15,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreationRequest {
-    @NotBlank(message = "Username không được để trống")
-    @Size(min = 3, message = "Username phải có ít nhất 3 ký tự")
+    @NotBlank(message = "FIELD_NOT_BLANK")
+    @Size(min = 3, message = "USERNAME_INVALID")
     private String username;
 
-    @NotBlank(message = "Password không được để trống")
-    @Size(min = 8, message = "Password phải có ít nhất 8 ký tự")
+    @NotBlank(message = "FIELD_NOT_BLANK")
+    @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
 
-    @Email(message = "Email không đúng định dạng")
+    @Email(message = "EMAIL_INVALID")
     private String email;
 
     private String fullName;
