@@ -7,6 +7,7 @@ import com.toeic.be.toeicservice.dto.response.UserResponse;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
+import com.toeic.be.toeicservice.mapper.UserMapper;
 import com.toeic.be.toeicservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserMapper userMapper;
+
 
     public User createUser(UserCreationRequest request){
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -33,15 +37,15 @@ public class UserService {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
 
-        User user = new User();
+        User user = userMapper.toUser(request);
 
-        user.setUsername(request.getUsername());
-
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-        user.setPassword(encodedPassword);
-        user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
-        user.setRoles(Set.of(request.getRoles()));
+//        user.setUsername(request.getUsername());
+//
+//        String encodedPassword = passwordEncoder.encode(request.getPassword());
+//        user.setPassword(encodedPassword);
+//        user.setEmail(request.getEmail());
+//        user.setFullName(request.getFullName());
+//        user.setRoles(Set.of(request.getRoles()));
 
         return userRepository.save(user);
     }

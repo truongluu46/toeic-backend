@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,5 +31,5 @@ public class UserCreationRequest {
     private String fullName;
 
     @NotNull
-    private Integer roles;
+    private Set<Integer> roles;
 }
