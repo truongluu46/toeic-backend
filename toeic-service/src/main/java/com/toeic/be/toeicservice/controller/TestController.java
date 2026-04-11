@@ -6,6 +6,7 @@ import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Test;
 import com.toeic.be.toeicservice.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class TestController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Test createTest(@RequestBody TestCreationRequest request) {
         return testService.createTest(request);
     }
