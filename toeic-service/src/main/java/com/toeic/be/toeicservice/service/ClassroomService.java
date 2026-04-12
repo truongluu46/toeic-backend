@@ -6,6 +6,7 @@ import com.toeic.be.toeicservice.entity.Classroom;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
+import com.toeic.be.toeicservice.mapper.ClassroomMapper;
 import com.toeic.be.toeicservice.repository.ClassroomRepository;
 import com.toeic.be.toeicservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,11 @@ import java.util.Set;
 public class ClassroomService {
     private final ClassroomRepository classroomRepository;
     private final UserRepository userRepository;
-    ClassroomService(ClassroomRepository classroomRepository, UserRepository userRepository){
+    private final ClassroomMapper classroomMapper;
+    ClassroomService(ClassroomRepository classroomRepository, UserRepository userRepository, ClassroomMapper classroomMapper){
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
+        this.classroomMapper = classroomMapper;
     }
 
     @Transactional
@@ -35,18 +38,17 @@ public class ClassroomService {
             throw new AppException(ErrorCode.CLASSCODE_EXISTED);
         }
 
-        User owner = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Classroom classroom = new Classroom();
-        classroom.setClassName(request.getClassName());
-        classroom.setClassCode(request.getClassCode());
-        classroom.setDescription(request.getDescription());
-        classroom.setOwner(owner);
-        Set<User> students = new HashSet<>();
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
+        Classroom classroom = classroomMapper.toClassroom(request);
+        classroom.setOwner(owner);
+
+        Set<User> students = new HashSet<>();
         if (request.getStudentIds() != null) {
-            for (String studentId: request.getStudentIds()) {
+            for (String studentId : request.getStudentIds()) {
                 User student = userRepository.findById(studentId)
-                        .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
+                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
                 students.add(student);
             }
         }
