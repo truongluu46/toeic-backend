@@ -33,6 +33,21 @@ public class TestService {
     public Test createTest(TestCreationRequest request) {
 
         Test test = testMapper.toTest(request);
+        if (test.getParts() != null) {
+            test.getParts().forEach(part -> {
+                part.setTest(test);
+
+                if (part.getGroups() != null) {
+                    part.getGroups().forEach(group -> {
+                        group.setPart(part);
+
+                        if (group.getQuestions() != null) {
+                            group.getQuestions().forEach(q -> q.setGroup(group));
+                        }
+                    });
+                }
+            });
+        }
 //        test.setTitle(request.title);
 //        test.setDuration(request.duration);
 //        test.setDescription(request.description);
@@ -75,6 +90,8 @@ public class TestService {
 //            parts.add(part);
 //        }
 //        test.setParts(parts);
+        System.out.println("Parts size: " + (test.getParts() != null ? test.getParts().size() : "NULL"));
+
         return testRepository.save(test);
     }
 
