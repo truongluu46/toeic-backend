@@ -1,5 +1,6 @@
 package com.toeic.be.toeicservice.dto.request;
 
+import com.toeic.be.toeicservice.constant.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

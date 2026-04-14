@@ -1,5 +1,6 @@
 package com.toeic.be.toeicservice.entity;
 
+import com.toeic.be.toeicservice.constant.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;

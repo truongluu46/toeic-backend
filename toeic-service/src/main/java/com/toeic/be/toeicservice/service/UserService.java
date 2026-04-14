@@ -28,7 +28,7 @@ public class UserService {
     private UserMapper userMapper;
 
 
-    public User createUser(UserCreationRequest request){
+    public UserResponse createUser(UserCreationRequest request){
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -38,6 +38,8 @@ public class UserService {
         }
 
         User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
 
 //        user.setUsername(request.getUsername());
 //
@@ -47,7 +49,8 @@ public class UserService {
 //        user.setFullName(request.getFullName());
 //        user.setRoles(Set.of(request.getRoles()));
 
-        return userRepository.save(user);
+         User savedUser = userRepository.save(user);
+         return userMapper.toUserResponse(savedUser);
     }
 
     public List<User> getUsers(){
@@ -55,20 +58,21 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUser(String id){
-        return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    public UserResponse getUser(String id){
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResponse(user);
     }
 
-    public User updateUser(String userId, UserUpdateRequest request) {
-        User user = getUser(userId);
+    public UserResponse updateUser(String userId, UserUpdateRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
+        userMapper.updateUser(user, request);
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         user.setPassword(encodedPassword);
-        user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
-        user.setRoles(new java.util.HashSet<>(Set.of(request.getRoles())));
 
-        return userRepository.save(user);
+
+         User savedUser = userRepository.save(user);
+         return userMapper.toUserResponse(savedUser);
     }
 
     public void deleteUser(String userId){

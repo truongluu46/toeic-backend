@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-  //  @Autowired
     private final UserService userService;
     public UserController(UserService userService){
         this.userService = userService;
@@ -25,8 +24,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ApiResponse<User> createUser(@Valid @RequestBody UserCreationRequest request) {
-        ApiResponse<User> apiResponse = new ApiResponse<>();
+    ApiResponse<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
 
         apiResponse.setResults(userService.createUser(request));
 
@@ -39,16 +38,16 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    ApiResponse<User> getUser(@PathVariable("userId") String userId)
+    ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId)
     {
-        ApiResponse<User> apiResponse = new ApiResponse<>();
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResults(userService.getUser(userId));
         return apiResponse;
     }
 
     @PutMapping("/{userId}")
-    ApiResponse<User> updateUser(@RequestBody UserUpdateRequest request, @PathVariable("userId") String userId){
-        ApiResponse<User> apiResponse = new ApiResponse<>();
+    ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request, @PathVariable("userId") String userId){
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResults(userService.updateUser(userId, request));
         return apiResponse;
     }
