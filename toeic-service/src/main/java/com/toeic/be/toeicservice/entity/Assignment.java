@@ -7,28 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class Result {
-    @Id @GeneratedValue
+@AllArgsConstructor
+public class Assignment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int score;
-    private int correctAnswers;
-
     @ManyToOne
-    private User user;
+    private Classroom classroom;
 
     @ManyToOne
     private Test test;
 
-    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL)
-    private List<Answer> answers;
-
-    private LocalDateTime submittedAt;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private Integer maxAttempts;
 }
