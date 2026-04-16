@@ -17,8 +17,12 @@ import java.util.Set;
 @Builder
 public class Test {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private boolean isPublic;
+
+    private boolean isComplete;
 
     private String description;
     private String title;
