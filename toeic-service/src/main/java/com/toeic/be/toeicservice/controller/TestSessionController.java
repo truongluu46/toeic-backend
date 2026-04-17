@@ -22,8 +22,10 @@ public class TestSessionController {
 
     @PostMapping("/{testId}/start")
     public ApiResponse<TestSession> startTest(@PathVariable Long testId, @AuthenticationPrincipal User user){
-        TestSession session = testSessionService.startTest(Long testId,User user);
+        ApiResponse<TestSession> apiResponse = new ApiResponse<>();
 
+        apiResponse.setResults(testSessionService.startTest( testId, user));
+        return apiResponse;
     }
 
 }
