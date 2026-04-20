@@ -9,6 +9,9 @@ import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.mapper.ClassroomMapper;
 import com.toeic.be.toeicservice.repository.ClassroomRepository;
 import com.toeic.be.toeicservice.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +21,12 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClassroomService {
-    private final ClassroomRepository classroomRepository;
-    private final UserRepository userRepository;
-    private final ClassroomMapper classroomMapper;
-    ClassroomService(ClassroomRepository classroomRepository, UserRepository userRepository, ClassroomMapper classroomMapper){
-        this.classroomRepository = classroomRepository;
-        this.userRepository = userRepository;
-        this.classroomMapper = classroomMapper;
-    }
+     ClassroomRepository classroomRepository;
+     UserRepository userRepository;
+     ClassroomMapper classroomMapper;
 
     @Transactional
     public Classroom createClassroom(ClassCreationRequest request, String userId){

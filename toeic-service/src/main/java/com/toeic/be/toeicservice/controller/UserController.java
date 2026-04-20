@@ -7,6 +7,9 @@ import com.toeic.be.toeicservice.dto.response.UserResponse;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    private final UserService userService;
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+    UserService userService;
 
 
     @PostMapping

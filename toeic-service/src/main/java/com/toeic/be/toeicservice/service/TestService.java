@@ -12,6 +12,9 @@ import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.mapper.TestMapper;
 import com.toeic.be.toeicservice.repository.TestRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -23,11 +26,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TestService {
-    @Autowired
-    private TestRepository testRepository;
-    @Autowired
-    private TestMapper testMapper;
+     TestRepository testRepository;
+     TestMapper testMapper;
 
     @Transactional
     public Test createTest(TestCreationRequest request) {

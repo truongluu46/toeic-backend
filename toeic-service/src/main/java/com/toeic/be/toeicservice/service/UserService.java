@@ -9,6 +9,9 @@ import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.mapper.UserMapper;
 import com.toeic.be.toeicservice.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,15 +20,14 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserMapper userMapper;
+     UserMapper userMapper;
 
 
     public UserResponse createUser(UserCreationRequest request){

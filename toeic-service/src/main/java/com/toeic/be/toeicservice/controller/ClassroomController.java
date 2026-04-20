@@ -6,6 +6,9 @@ import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Classroom;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.ClassroomService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/classrooms")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClassroomController {
-    private final ClassroomService classroomService;
-    public ClassroomController(ClassroomService classroomService){
-        this.classroomService = classroomService;
-    }
+    ClassroomService classroomService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
