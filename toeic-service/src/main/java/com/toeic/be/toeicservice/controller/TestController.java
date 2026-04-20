@@ -5,6 +5,9 @@ import com.toeic.be.toeicservice.dto.request.TestCreationRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Test;
 import com.toeic.be.toeicservice.service.TestService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +16,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tests")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TestController {
 
-    private final TestService testService;
-    public TestController(TestService testService){
-        this.testService = testService;
-    }
+    TestService testService;
 
     @GetMapping()
     List<Test> getTests(){

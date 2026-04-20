@@ -9,6 +9,8 @@ import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +20,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
@@ -59,6 +63,7 @@ public class AuthenticationService {
             jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         } catch (JOSEException e) {
+            log.error("Cannot create access token");
             throw new RuntimeException(e);
         }
     }
