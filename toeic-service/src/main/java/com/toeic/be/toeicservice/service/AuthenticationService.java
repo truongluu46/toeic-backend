@@ -53,9 +53,8 @@ public class AuthenticationService {
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
         var verified = signedJWT.verify(verifier);
-
         return IntrospectResponse.builder()
-                .vaLid(verified && expiryTime.after(new Date()))
+                .vaLid(verified /*&& expiryTime.after(new Date())*/)
                 .build();
 
     }
