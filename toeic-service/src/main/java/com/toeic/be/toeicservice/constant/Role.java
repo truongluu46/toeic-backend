@@ -3,7 +3,7 @@ package com.toeic.be.toeicservice.constant;
 import lombok.Getter;
 
 @Getter
-public enum Role {
+public enum     Role {
     ADMIN(1),
     TEACHER(2),
     STUDENT(3);
