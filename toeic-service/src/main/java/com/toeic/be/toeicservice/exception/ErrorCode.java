@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     INVALID_JSON_FORMAT(6666,"The uploaded JSON format is invalid or has incorrect syntax", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_ROLE(7788,"Invalid role",HttpStatus.NOT_FOUND),
+    INVALID_ROLE(7788,"Invalid role",HttpStatus.FORBIDDEN ),
+    UNAUTHENTICATED(7778,"User is not authenticated",HttpStatus.UNAUTHORIZED),
     INVALID_CREDENTIALS(7777, "Invalid username or password",HttpStatus.UNAUTHORIZED),
     USER_EXISTED(1001, "User already existed", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(1002, "User not found", HttpStatus.NOT_FOUND),
