@@ -27,5 +27,5 @@ public class UserUpdateRequest {
     private String fullName;
 
     @NotNull
-    private Set<Integer> roles;
+    private Set<String> roles;
 }

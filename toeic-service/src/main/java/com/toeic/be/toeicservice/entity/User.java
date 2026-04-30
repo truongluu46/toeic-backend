@@ -1,6 +1,5 @@
 package com.toeic.be.toeicservice.entity;
 
-import com.toeic.be.toeicservice.constant.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -33,9 +32,6 @@ public class User {
 
     private boolean enabled = true;
 
-    // Phân quyền: Một người dùng có thể có nhiều vai trò (ROLE_USER, ROLE_ADMIN)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role_id")
-    private Set<Integer> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 }
