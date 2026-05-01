@@ -21,11 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -94,17 +96,18 @@ public class AuthenticationService {
     }
 
     private String buildScope(User user) {
-        return user.getRoles().stream()
-                .map(roleValue -> {
-                    // Tìm enum Role có value tương ứng với số nguyên
-                    for (Role role : Role.values()) {
-                        if (role.getValue() == roleValue) {
-                            return role.name(); // "ADMIN", "TEACHER", "STUDENT"
-                        }
-                    }
-                    throw new AppException(ErrorCode.INVALID_ROLE);
-                })
-                .collect(Collectors.joining(" "));
+        StringJoiner joiner = new StringJoiner(" ");
+
+        if (!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(role -> {
+                joiner.add("ROLE_" + role.getName());
+                if (!CollectionUtils.isEmpty(role.getPermissions())){
+                role.getPermissions()
+                        .forEach(permission -> {joiner.add(permission.getName());
+                });}
+            });
+        }
+        return joiner.toString();
     }
 }
 

@@ -8,6 +8,7 @@ import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.exception.AppException;
 import com.toeic.be.toeicservice.exception.ErrorCode;
 import com.toeic.be.toeicservice.mapper.UserMapper;
+import com.toeic.be.toeicservice.repository.RoleRepository;
 import com.toeic.be.toeicservice.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +32,7 @@ import java.util.Set;
 @Slf4j
 public class UserService {
      UserRepository userRepository;
+     RoleRepository roleRepository;
 
      PasswordEncoder passwordEncoder;
 
@@ -48,20 +51,12 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-
-//        user.setUsername(request.getUsername());
-//
-//        String encodedPassword = passwordEncoder.encode(request.getPassword());
-//        user.setPassword(encodedPassword);
-//        user.setEmail(request.getEmail());
-//        user.setFullName(request.getFullName());
-//        user.setRoles(Set.of(request.getRoles()));
-
          User savedUser = userRepository.save(user);
          return userMapper.toUserResponse(savedUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('UPDATE_DATA')")
     public List<User> getUsers(){
         log.info("In method get user");
         return userRepository.findAll();
@@ -78,9 +73,10 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUser(user, request);
 
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-        user.setPassword(encodedPassword);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
          User savedUser = userRepository.save(user);
          return userMapper.toUserResponse(savedUser);

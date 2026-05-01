@@ -1,6 +1,6 @@
 package com.toeic.be.toeicservice.dto.request;
 
-import com.toeic.be.toeicservice.constant.Role;
+import com.toeic.be.toeicservice.entity.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,5 +32,5 @@ public class UserCreationRequest {
     private String fullName;
 
     @NotNull
-    private Set<Integer> roles;
+    private Set<String> roles;
 }
