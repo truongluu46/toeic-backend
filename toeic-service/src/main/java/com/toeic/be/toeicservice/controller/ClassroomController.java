@@ -6,6 +6,7 @@ import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.entity.Classroom;
 import com.toeic.be.toeicservice.entity.User;
 import com.toeic.be.toeicservice.service.ClassroomService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,7 @@ public class ClassroomController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<Classroom> createClassroom(@RequestBody ClassCreationRequest request) {
+    public ApiResponse<Classroom> createClassroom(@RequestBody @Valid ClassCreationRequest request) {
         ApiResponse<Classroom> apiResponse = new ApiResponse<>();
 
         apiResponse.setResults(classroomService.createClassroom(request, request.getOwnerId()));

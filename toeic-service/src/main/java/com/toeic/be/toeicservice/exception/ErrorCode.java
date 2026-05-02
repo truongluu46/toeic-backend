@@ -22,7 +22,8 @@ public enum ErrorCode {
     TEST_NOT_FOUND(1005, "Test not found", HttpStatus.NOT_FOUND),
     CLASSCODE_EXISTED(1006,"Classroom code already existed", HttpStatus.BAD_REQUEST),
     CLASSNAME_EXISTED(1007,"Classroom name already existed", HttpStatus.BAD_REQUEST),
-    CLASS_NOT_FOUND(1008,"Classroom not found",HttpStatus.NOT_FOUND);
+    CLASS_NOT_FOUND(1008,"Classroom not found",HttpStatus.NOT_FOUND),
+    CLASSCODE_INVALID(1099,"Invalid class code",HttpStatus.BAD_REQUEST);
     private final int code;
     private final String message;
     private final HttpStatusCode statusCode;
