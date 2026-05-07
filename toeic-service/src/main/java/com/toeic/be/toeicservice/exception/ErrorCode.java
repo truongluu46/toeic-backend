@@ -13,7 +13,7 @@ public enum ErrorCode {
     INVALID_CREDENTIALS(7777, "Invalid username or password",HttpStatus.UNAUTHORIZED),
     USER_EXISTED(1001, "User already existed", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(1002, "User not found", HttpStatus.NOT_FOUND),
-    USERNAME_INVALID(2001,"User name must have at least 3 characters", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(2001,"User name must have at least {min} characters", HttpStatus.BAD_REQUEST),
     PASSWORD_INVALID(2002, "Password must have at least 8 characters", HttpStatus.BAD_REQUEST),
     EMAIL_INVALID(2003, "Email is not valid", HttpStatus.BAD_REQUEST),
     FIELD_NOT_BLANK(2004, "This field cannot be blank", HttpStatus.BAD_REQUEST),
@@ -23,7 +23,7 @@ public enum ErrorCode {
     CLASSCODE_EXISTED(1006,"Classroom code already existed", HttpStatus.BAD_REQUEST),
     CLASSNAME_EXISTED(1007,"Classroom name already existed", HttpStatus.BAD_REQUEST),
     CLASS_NOT_FOUND(1008,"Classroom not found",HttpStatus.NOT_FOUND),
-    CLASSCODE_INVALID(1099,"Invalid class code",HttpStatus.BAD_REQUEST);
+    CLASSCODE_INVALID(1099,"Class code must be at least {min} characters",HttpStatus.BAD_REQUEST);
     private final int code;
     private final String message;
     private final HttpStatusCode statusCode;
