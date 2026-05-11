@@ -1,9 +1,9 @@
 package com.toeic.be.toeicservice.repository;
 
-import com.toeic.be.toeicservice.entity.ClassroomTest;
+import com.toeic.be.toeicservice.entity.InvalidatedToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClassroomTestRepository extends JpaRepository<ClassroomTest, Long> {
+public interface InvalidatedTokenRepository extends JpaRepository<InvalidatedToken, String> {
 }
