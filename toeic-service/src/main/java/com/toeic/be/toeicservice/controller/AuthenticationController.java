@@ -3,6 +3,7 @@ package com.toeic.be.toeicservice.controller;
 import com.nimbusds.jose.JOSEException;
 import com.toeic.be.toeicservice.dto.request.AuthenticationRequest;
 import com.toeic.be.toeicservice.dto.request.IntrospectRequest;
+import com.toeic.be.toeicservice.dto.request.LogoutRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.dto.response.AuthenticationResponse;
 import com.toeic.be.toeicservice.dto.response.IntrospectResponse;
@@ -32,6 +33,13 @@ public class AuthenticationController {
         return ApiResponse.<AuthenticationResponse>builder()
                 .results(results)
                 .build();
+    }
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@RequestBody LogoutRequest request)
+            throws ParseException,JOSEException{
+         authenticationService.logout(request);
+         return ApiResponse.<Void>builder().build();
+
     }
 
     @PostMapping("/introspect")
