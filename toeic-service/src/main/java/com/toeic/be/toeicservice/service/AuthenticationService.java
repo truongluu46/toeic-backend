@@ -9,6 +9,7 @@ import com.toeic.be.toeicservice.constant.Role;
 import com.toeic.be.toeicservice.dto.request.AuthenticationRequest;
 import com.toeic.be.toeicservice.dto.request.IntrospectRequest;
 import com.toeic.be.toeicservice.dto.request.LogoutRequest;
+import com.toeic.be.toeicservice.dto.request.RefreshRequest;
 import com.toeic.be.toeicservice.dto.response.AuthenticationResponse;
 import com.toeic.be.toeicservice.dto.response.IntrospectResponse;
 import com.toeic.be.toeicservice.entity.InvalidatedToken;
@@ -63,6 +64,31 @@ public class AuthenticationService {
         return IntrospectResponse.builder()
                 .valid(isValid)
                 .build();
+
+    }
+
+    public AuthenticationResponse refreshToken (RefreshRequest request) throws ParseException, JOSEException {
+        var snv = request.getRefreshtoken();
+        log.info("Refresh token: {}", snv);
+        var signJWT = verifyToken(request.getRefreshtoken());
+
+
+
+        var jit = signJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signJWT.getJWTClaimsSet().getExpirationTime();
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jit)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        var username = signJWT.getJWTClaimsSet().getSubject();
+
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        String token = generateToken(user);
+
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();
 
     }
 
@@ -129,7 +155,7 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         if(invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         return signedJWT;
     }

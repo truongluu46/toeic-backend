@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.toeic.be.toeicservice.dto.request.AuthenticationRequest;
 import com.toeic.be.toeicservice.dto.request.IntrospectRequest;
 import com.toeic.be.toeicservice.dto.request.LogoutRequest;
+import com.toeic.be.toeicservice.dto.request.RefreshRequest;
 import com.toeic.be.toeicservice.dto.response.ApiResponse;
 import com.toeic.be.toeicservice.dto.response.AuthenticationResponse;
 import com.toeic.be.toeicservice.dto.response.IntrospectResponse;
@@ -34,6 +35,15 @@ public class AuthenticationController {
                 .results(results)
                 .build();
     }
+
+    @PostMapping("/refreshtoken")
+    public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        AuthenticationResponse results = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .results(results)
+                .build();
+    }
+
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@RequestBody LogoutRequest request)
             throws ParseException,JOSEException{
