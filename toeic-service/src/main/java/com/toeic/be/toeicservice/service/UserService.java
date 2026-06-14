@@ -57,9 +57,12 @@ public class UserService {
 
    // @PreAuthorize("hasRole('ADMIN')")
     @PreAuthorize("hasAuthority('UPDATE_DATA')")
-    public List<User> getUsers(){
+    public List<UserResponse> getUsers(){
         log.info("In method get user");
-        return userRepository.findAll();
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toUserResponse)
+                .toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
