@@ -1,6 +1,5 @@
 package com.toeic.be.toeicservice.service;
 
-import com.toeic.be.toeicservice.constant.Role;
 import com.toeic.be.toeicservice.dto.request.UserCreationRequest;
 import com.toeic.be.toeicservice.dto.request.UserUpdateRequest;
 import com.toeic.be.toeicservice.dto.response.UserResponse;
@@ -14,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,8 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,14 +69,34 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND));
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
+            if (!Objects.equals(user.getUsername(), authentication.getName())) {
+                throw new AccessDeniedException("Cannot update another user");
+            }
+
+            Set<String> currentRoles = user.getRoles() == null ? Set.of() : user.getRoles().stream()
+                    .map(com.toeic.be.toeicservice.entity.Role::getName)
+                    .collect(Collectors.toSet());
+            if (request.getRoles() != null && !currentRoles.equals(request.getRoles())) {
+                throw new AccessDeniedException("Only administrators can change roles");
+            }
+        }
+
         userMapper.updateUser(user, request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        var roles = roleRepository.findAllById(request.getRoles());
-        user.setRoles(new HashSet<>(roles));
+        if (isAdmin && request.getRoles() != null) {
+            var roles = roleRepository.findAllById(request.getRoles());
+            user.setRoles(new HashSet<>(roles));
+        }
 
          User savedUser = userRepository.save(user);
          return userMapper.toUserResponse(savedUser);
@@ -92,6 +112,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(String userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
